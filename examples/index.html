@@ -42,7 +42,9 @@ let state = {
 const proxyState = createProxyState(state);
 const proxy = proxyState.getProxy();
 const raciocinio = proxy.raciocinio;
-raciocinio.teste1 = 'ola1';
+raciocinio.teste1 = {
+    test: 'jjj'   
+};
 raciocinio.elementoSelecionado = {
     teste: {
         oi: 1
