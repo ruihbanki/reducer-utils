@@ -1,0 +1,36 @@
+{
+  "name": "redux-state-utils",
+  "version": "0.0.1",
+  "description": "Library to help the creation of states in redux",
+  "scripts": {
+    "run": "babel-node app.js",
+    "build": "babel . -d .dist --ignore=\"node_modules\"",
+    "test-old": "mocha --reporter spec",
+    "test": "npm run build && mocha --compilers js:babel-core/register"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ruihbanki/redux-state-utils.git"
+  },
+  "keywords": [
+    "Redux",
+    "Reducers",
+    "State",
+    "Utils"
+  ],
+  "author": "Rui Hiroshi Banki <ruihbanki@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ruihbanki/redux-state-utils/issues"
+  },
+  "homepage": "https://github.com/ruihbanki/redux-state-utils#readme",
+  "devDependencies": {
+    "babel-cli": "*",
+    "babel-core": "*",
+    "babel-preset-es2015-node5": "*",
+    "babel-preset-stage-3": "*",
+    "babel-register": "*",    
+    "chai": "^4.0.2",
+    "mocha": "^3.4.2"
+  }
+}

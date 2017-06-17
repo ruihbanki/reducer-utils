@@ -15,3 +15,7 @@ function logDifferences(state, newState, level = 1) {
         }
     }
 }
+
+export default {
+    logDifferences
+};
