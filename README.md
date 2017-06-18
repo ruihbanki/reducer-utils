@@ -5,6 +5,7 @@ Utilities to create a new state in redux.
 ## Code Example
 
 // state
+
 const state = {
     element: {
         {
@@ -40,6 +41,7 @@ Sometime it is necessary to write many code to create then.
 ### state-proxy
 
 import createProxyState from '../src/state-proxy';
+
 const proxyState = createProxyState(state);
 
 // get proxy of the state
