@@ -17,6 +17,7 @@ const state = {
 // create a proxy state
 
 const proxyState = createProxyState(state);
+
 const proxy = proxyState.getProxy();
 
 // change anything in proxy not change the original state
@@ -34,13 +35,14 @@ Sometime it is necessary to write many code to create then.
 
 ## Installation
 
-`npm install @ruihbanki/redux-state-utils`
+`npm install redux-state-utils`
 
 ## API Reference
 
 ### state-proxy
 
 import createProxyState from '../src/state-proxy';
+
 const proxyState = createProxyState(state);
 
 // get proxy of the state
