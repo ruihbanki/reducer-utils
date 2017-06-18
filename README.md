@@ -17,6 +17,7 @@ const state = {
 // create a proxy state
 
 const proxyState = createProxyState(state);
+
 const proxy = proxyState.getProxy();
 
 // change anything in proxy not change the original state
