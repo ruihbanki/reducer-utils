@@ -14,13 +14,16 @@ const state = {
 };
 
 // create a proxy state
+
 const proxyState = createProxyState(state);
 const proxy = proxyState.getProxy();
 
 // change anything in proxy not change the original state
+
 proxy.element.type = 'SPAN';
 
 // get the new state
+
 const newState = proxyState.getNewState();
 
 ## Motivation
@@ -40,9 +43,11 @@ import createProxyState from '../src/state-proxy';
 const proxyState = createProxyState(state);
 
 // get proxy of the state
+
 const proxy = proxyState.proxy;                 
 
 // return the new state 
+
 const newState = proxyState.getNewState();      
 
 ### utils
