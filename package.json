@@ -1,6 +1,6 @@
 {
   "name": "redux-state-utils",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Library to help the creation of states in redux",
   "scripts": {
     "run": "babel-node app.js",
