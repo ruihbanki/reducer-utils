@@ -35,7 +35,7 @@ Sometime it is necessary to write many code to create then.
 
 ## Installation
 
-`npm install @ruihbanki/redux-state-utils`
+`npm install redux-state-utils`
 
 ## API Reference
 
