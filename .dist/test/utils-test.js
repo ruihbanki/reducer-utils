@@ -99,3 +99,19 @@ describe('#utils.deleteNestedById', function () {
         (0, _chai.expect)(this.itemsNested[0].children.length).to.equal(1);
     });
 });
+
+describe('#utils.createItemsByProperty', function () {
+    it('should return a object', function () {
+        const itemsById = _utils2.default.createItemsByProperty(this.itemsNested, 'name');
+        console.log(itemsById);
+        (0, _chai.expect)(itemsById['Item 5'].id).to.equal(5);
+    });
+});
+
+describe('#utils.createItemsById', function () {
+    it('should return a object', function () {
+        const itemsById = _utils2.default.createItemsById(this.itemsNested);
+        console.log(itemsById);
+        (0, _chai.expect)(itemsById[2].name).to.equal('Item 2');
+    });
+});

@@ -91,6 +91,44 @@ function deleteNestedById(items, id) {
     return deleteNestedByProperty(items, 'id', id, propChildren);
 }
 
+function createItemsByProperty(items, propKey) {
+    let propChildren = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'children';
+
+    const itemsBy = {};
+    for (let item of items) {
+        if (item) {
+            const key = item[propKey];
+            itemsBy[key] = item;
+            let children = item[propChildren];
+            if (children) {
+                addItemsByProperty(itemsBy, children, propKey, propChildren);
+            }
+        }
+    }
+    return itemsBy;
+}
+
+function addItemsByProperty(itemsBy, items, propKey) {
+    let propChildren = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'children';
+
+    for (let item of items) {
+        if (item) {
+            const key = item[propKey];
+            itemsBy[key] = item;
+            let children = item[propChildren];
+            if (children) {
+                addItemsByProperty(itemsBy, children, propKey, propChildren);
+            }
+        }
+    }
+}
+
+function createItemsById(items) {
+    let propChildren = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'children';
+
+    return createItemsByProperty(items, 'id', propChildren);
+}
+
 function logDifferences(state, newState) {
     let level = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
 
@@ -120,5 +158,7 @@ exports.default = {
     deleteById: deleteById,
     deleteNestedByProperty: deleteNestedByProperty,
     deleteNestedById: deleteNestedById,
+    createItemsByProperty: createItemsByProperty,
+    createItemsById: createItemsById,
     logDifferences: logDifferences
 };

@@ -78,6 +78,38 @@ function deleteNestedById(items, id, propChildren = 'children') {
     return deleteNestedByProperty(items, 'id', id, propChildren);
 }
 
+function createItemsByProperty(items, propKey, propChildren = 'children') {
+    const itemsBy = {};
+    for (let item of items) {
+        if (item) {
+            const key = item[propKey];
+            itemsBy[key] = item;
+            let children = item[propChildren];
+            if (children) {
+                addItemsByProperty(itemsBy, children, propKey, propChildren);
+            }
+        }
+    }
+    return itemsBy;
+}
+
+function addItemsByProperty(itemsBy, items, propKey, propChildren = 'children') {
+    for (let item of items) {
+        if (item) {
+            const key = item[propKey];
+            itemsBy[key] = item;
+            let children = item[propChildren];
+            if (children) {
+                addItemsByProperty(itemsBy, children, propKey, propChildren);
+            }
+        }
+    }
+}
+
+function createItemsById(items, propChildren = 'children') {
+    return createItemsByProperty(items, 'id', propChildren);
+}
+
 function logDifferences(state, newState, level = 1) {
     if (level === 1) {
         console.log('STATE DIFFERENCE');
@@ -105,5 +137,7 @@ export default {
     deleteById,
     deleteNestedByProperty,
     deleteNestedById,
+    createItemsByProperty,
+    createItemsById,
     logDifferences
 };

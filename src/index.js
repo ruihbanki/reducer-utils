@@ -1,7 +1,7 @@
 import createProxyState from './state-proxy';
 import utils from './utils';
 
-exports.default = {
+export {
     createProxyState,
     utils
 };
