@@ -1,5 +1,6 @@
 {
   "name": "redux-state-utils",
+  "main": "src/index.js",
   "version": "0.1.0",
   "description": "Library to help the creation of states in redux",
   "scripts": {
