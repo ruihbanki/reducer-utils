@@ -1,3 +1,8 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 function findByProperty(items, propName, propValue) {
     for (let item of items) {
         if (item[propName] === propValue) {
@@ -11,7 +16,9 @@ function findById(items, id) {
     return findByProperty(items, 'id', id);
 }
 
-function findNestedByProperty(items, propName, propValue, propChildren = 'children') {
+function findNestedByProperty(items, propName, propValue) {
+    let propChildren = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'children';
+
     for (let item of items) {
         if (item[propName] === propValue) {
             return item;
@@ -27,7 +34,9 @@ function findNestedByProperty(items, propName, propValue, propChildren = 'childr
     return null;
 }
 
-function findNestedById(items, id, propChildren = 'children') {
+function findNestedById(items, id) {
+    let propChildren = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'children';
+
     return findNestedByProperty(items, 'id', id, propChildren);
 }
 
@@ -51,7 +60,9 @@ function deleteById(items, id) {
     return deleteByProperty(items, 'id', id);
 }
 
-function deleteNestedByProperty(items, propName, propValue, propChildren = 'children') {
+function deleteNestedByProperty(items, propName, propValue) {
+    let propChildren = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'children';
+
     let index = -1;
     for (let i = 0, len = items.length; i < len; i++) {
         let item = items[i];
@@ -74,11 +85,15 @@ function deleteNestedByProperty(items, propName, propValue, propChildren = 'chil
     return false;
 }
 
-function deleteNestedById(items, id, propChildren = 'children') {
+function deleteNestedById(items, id) {
+    let propChildren = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'children';
+
     return deleteNestedByProperty(items, 'id', id, propChildren);
 }
 
-function createItemsByProperty(items, propKey, propChildren = 'children') {
+function createItemsByProperty(items, propKey) {
+    let propChildren = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'children';
+
     const itemsBy = {};
     for (let item of items) {
         if (item) {
@@ -93,7 +108,9 @@ function createItemsByProperty(items, propKey, propChildren = 'children') {
     return itemsBy;
 }
 
-function addItemsByProperty(itemsBy, items, propKey, propChildren = 'children') {
+function addItemsByProperty(itemsBy, items, propKey) {
+    let propChildren = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'children';
+
     for (let item of items) {
         if (item) {
             const key = item[propKey];
@@ -106,38 +123,42 @@ function addItemsByProperty(itemsBy, items, propKey, propChildren = 'children') 
     }
 }
 
-function createItemsById(items, propChildren = 'children') {
+function createItemsById(items) {
+    let propChildren = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'children';
+
     return createItemsByProperty(items, 'id', propChildren);
 }
 
-function logDifferences(state, newState, level = 1) {
+function logDifferences(state, newState) {
+    let level = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
+
     if (level === 1) {
         console.log('STATE DIFFERENCE');
-    }    
+    }
     for (key in newState) {
         const newStateValue = newState[key];
         if (newStateValue instanceof Object) {
             const stateValue = state[key];
-            if (stateValue !== newStateValue) {                
-                console.log(Array(level + 1).join('-') + ' ' +  key);
+            if (stateValue !== newStateValue) {
+                console.log(Array(level + 1).join('-') + ' ' + key);
                 if (stateValue && newStateValue) {
                     logDifferences(stateValue, newStateValue, level + 2);
-                }          
+                }
             }
         }
     }
 }
 
-export default {
-    findByProperty,
-    findById,
-    findNestedByProperty,
-    findNestedById,
-    deleteByProperty,
-    deleteById,
-    deleteNestedByProperty,
-    deleteNestedById,
-    createItemsByProperty,
-    createItemsById,
-    logDifferences
+exports.default = {
+    findByProperty: findByProperty,
+    findById: findById,
+    findNestedByProperty: findNestedByProperty,
+    findNestedById: findNestedById,
+    deleteByProperty: deleteByProperty,
+    deleteById: deleteById,
+    deleteNestedByProperty: deleteNestedByProperty,
+    deleteNestedById: deleteNestedById,
+    createItemsByProperty: createItemsByProperty,
+    createItemsById: createItemsById,
+    logDifferences: logDifferences
 };
