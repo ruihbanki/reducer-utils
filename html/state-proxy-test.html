@@ -1,0 +1,131 @@
+<!doctype html>
+<html>
+<script src="../src/state-proxy.js"></script>
+<script src="../src/utils.js"></script>
+<script>
+
+const state = {
+    products: [
+        {
+            id: 1,
+            name: 'Nokia',
+        },
+        {
+            id: 2,
+            name: 'Iphone',
+        },
+        {
+            id: 3,
+            name: 'Galaxy',
+        },
+    ],
+    tree: [
+        {
+            id: 1,
+            name: 'Item 1',
+            children: [
+                {
+                    id: 2,
+                    name: 'Item 1.1',
+                    children: [
+                        {
+                            id: 3,
+                            name: 'Item 1.1.1',
+                        }
+                    ]
+                },
+                {
+                    id: 4,
+                    name: 'Item 1.2',
+                }                
+            ]
+        },
+        {
+            id: 5,
+            name: 'Item 2',
+        },
+    ],
+    user: {
+        name: 'Jonh',
+        roles: [
+            {
+                id: 1,
+                name: 'Engineer'
+            },
+            {
+                id: 2,
+                name: 'Manager'
+            },
+        ],
+        roleActive: {
+            id: 2,
+            name: 'Manager' 
+        }
+    },
+    
+};
+
+// remove an item in an array by index. OK
+var proxyState = createProxyState(state);
+var proxy = proxyState.getProxy();
+proxy.user.roles.splice(0, 1);
+var newState = proxyState.getNewState();
+logDifferences(state, newState);
+
+// push a value in an array. OK
+var proxyState = createProxyState(state);
+var proxy = proxyState.getProxy();
+proxy.products.push({
+    id: 4,
+    name: 'Blackbarry',
+});
+var newState = proxyState.getNewState();
+logDifferences(state, newState);
+
+// concat a value in an array. NO
+// TODO: when concat values that already exists, not create a copy???
+var proxyState = createProxyState(state);
+var proxy = proxyState.getProxy();
+var products = proxy.products;
+proxy.products = products.concat([
+    {
+        id: 4,
+        name: 'Blackbarry',
+    },
+    {
+        id: 5,
+        name: 'Other',
+    },
+])
+var newState = proxyState.getNewState();
+logDifferences(state, newState);
+
+// entries return array with proxies. OK
+var proxyState = createProxyState(state);
+var proxy = proxyState.getProxy();
+var entries = proxy.products.entries();
+var newState = proxyState.getNewState();
+console.log('entries', entries.next().value);
+
+// every method. OK
+var proxyState = createProxyState(state);
+var proxy = proxyState.getProxy();
+var every = proxy.products.every(item => item.id > 0);
+var newState = proxyState.getNewState();
+console.log('every', every);
+
+
+// TODO
+// support to all array methods https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/entries
+// when set a value that is a proxy is necessary to get the original object
+// create a method __isProxy()
+// create a method __getRawData()
+// proxyState be a state and has a getNewState() method
+// 
+
+
+</script>
+<body>
+
+</body>    
+</html>

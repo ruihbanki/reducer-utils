@@ -1,4 +1,4 @@
-export default function createProxyState(state) {
+function createProxyState(state) {
     let cloneState = null;
     const manager = {
         clone(prop) {
@@ -82,3 +82,5 @@ function returnGet(obj, name, manager) {
         return value;
     }
 }
+
+//export default createProxyState;
