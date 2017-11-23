@@ -62,8 +62,21 @@ const state = {
             name: 'Manager' 
         }
     },
-    
 };
+
+console.log('\n=> set string');
+var stateProxy = createStateProxy(state);
+stateProxy.user.name = 'Marie';
+var newState = stateProxy.__newState;
+console.log('newState', newState);
+logDifferences(state, newState);
+
+console.log('\n=> remove an item in an array by index');
+var stateProxy = createStateProxy(state);
+stateProxy.user.roles.splice(0, 1);
+var newState = stateProxy.__newState;
+console.log('newState', newState);
+logDifferences(state, newState);
 
 console.log('\n=> set in array');
 var stateProxy = createStateProxy(state);
@@ -73,12 +86,12 @@ stateProxy.products[0] = {
 };
 var newState = stateProxy.__newState;
 console.log('newState', newState);
-logDifferences(state, stateProxy.__newState);
+logDifferences(state, newState);
 
 console.log('\n=> set an proxy transform it in origina data');
 var stateProxy = createStateProxy(state);
-var role = stateProxy.user.roles[0];
-stateProxy.user.roleActive = role;
+var roleProxy = stateProxy.user.roles[0];
+stateProxy.user.roleActive = roleProxy;
 var newState = stateProxy.__newState;
 console.log('newState', newState);
 logDifferences(state, newState);
