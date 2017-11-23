@@ -1,4 +1,4 @@
-function createProxyState(state) {
+function createStateProxy(state) {
     let cloneState = null;
     const manager = {
         clone(prop) {
@@ -8,7 +8,10 @@ function createProxyState(state) {
             const clone = cloneProp(cloneState, prop);
             cloneState[prop] = clone;
             return clone;
-        }
+        },
+        getCloneState() {
+            return cloneState || state
+        },
     };
     const handler = {
         get: function(target, name) {
@@ -22,19 +25,11 @@ function createProxyState(state) {
             if (value.__isProxy) {
                 value = value.__object;
             }     
-            cloneState[prop] = value;     
+            cloneState[prop] = value; 
             return true;       
         }
     };
-    const proxy = new Proxy(state, handler);    
-    return {
-        getProxy: function() {
-            return proxy;
-        },
-        getNewState: function() {
-            return cloneState || state;
-        }
-    }
+    return new Proxy(state, handler);    
 }
 
 function createProxyObject(object, objectProp, parentManager) {
@@ -47,7 +42,10 @@ function createProxyObject(object, objectProp, parentManager) {
             const clone = cloneProp(cloneState, prop);
             cloneState[prop] = clone;
             return clone;
-        }
+        },
+        getCloneState() {
+            return parentManagergetCloneState();
+        },
     };
     const handler = {
         get: function(target, name) {
@@ -80,8 +78,15 @@ function cloneProp(obj, prop) {
 
 function returnGet(obj, name, manager) {
     const value = obj[name];
-    if (helpers[name]) {
-        return helpers[name](obj, name);
+    switch (name) {
+        case '__object':
+            return obj;
+        case '__isProxy':
+            return true;
+        case '__newState':
+            return manager.getCloneState();
+        default:
+            // continue
     }
     if (value instanceof Function) {
         return value;
@@ -91,14 +96,5 @@ function returnGet(obj, name, manager) {
         return value;
     }
 }
-
-const helpers = {
-    __object(obj) {
-        return obj;
-    },
-    __isProxy() {
-        return true;
-    }
-};
 
 //export default createProxyState;
