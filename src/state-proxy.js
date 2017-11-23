@@ -18,7 +18,10 @@ function createProxyState(state) {
         set: function(obj, prop, value) {
             if (!cloneState) {
                 cloneState = Object.assign({}, state);
-            }            
+            }       
+            if (value.__isProxy) {
+                value = value.__object;
+            }     
             cloneState[prop] = value;     
             return true;       
         }
@@ -55,6 +58,9 @@ function createProxyObject(object, objectProp, parentManager) {
             if (!cloneState) {
                 cloneState = parentManager.clone(objectProp);
             }            
+            if (value.__isProxy) {
+                value = value.__object;
+            }
             cloneState[prop] = value;  
             return true;          
         }
@@ -74,6 +80,9 @@ function cloneProp(obj, prop) {
 
 function returnGet(obj, name, manager) {
     const value = obj[name];
+    if (helpers[name]) {
+        return helpers[name](obj, name);
+    }
     if (value instanceof Function) {
         return value;
     }else if (value instanceof Object) {
@@ -82,5 +91,14 @@ function returnGet(obj, name, manager) {
         return value;
     }
 }
+
+const helpers = {
+    __object(obj) {
+        return obj;
+    },
+    __isProxy() {
+        return true;
+    }
+};
 
 //export default createProxyState;

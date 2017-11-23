@@ -65,6 +65,35 @@ const state = {
     
 };
 
+// set an proxy transform it in origina data
+var proxyState = createProxyState(state);
+var proxy = proxyState.getProxy();
+var role = proxy.user.roles[0];
+proxy.user.roleActive = role;
+var newState = proxyState.getNewState();
+console.log('newState', newState);
+logDifferences(state, newState);
+
+// helpers
+var proxyState = createProxyState(state);
+var proxy = proxyState.getProxy();
+var object = proxy.products[1].__object;
+var isProxy = proxy.user.__isProxy;
+var newState = proxyState.getNewState();
+console.log('object', object);
+console.log('isProxy', isProxy);
+
+// set in array
+var proxyState = createProxyState(state);
+var proxy = proxyState.getProxy();
+proxy.products[0] = {
+    id: 4,
+    name: 'Other',
+};
+var newState = proxyState.getNewState();
+console.log(proxy.products[0])
+logDifferences(state, newState);
+
 // remove an item in an array by index. OK
 var proxyState = createProxyState(state);
 var proxy = proxyState.getProxy();
@@ -118,11 +147,10 @@ console.log('every', every);
 // TODO
 // support to all array methods https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/entries
 // when set a value that is a proxy is necessary to get the original object
-// create a method __isProxy()
-// create a method __getRawData()
 // proxyState be a state and has a getNewState() method
+// create a method __isProxy() OK
+// create a method __getRawData() OK
 // 
-
 
 </script>
 <body>
