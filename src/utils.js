@@ -128,7 +128,6 @@ function logDifferences(state, newState, level = 1) {
     }
 }
 
-/*
 export default {
     findByProperty,
     findById,
@@ -142,4 +141,3 @@ export default {
     createItemsById,
     logDifferences
 };
-*/

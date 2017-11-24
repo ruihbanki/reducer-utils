@@ -97,4 +97,4 @@ function returnGet(obj, name, manager) {
     }
 }
 
-//export default createProxyState;
+export default createStateProxy;
