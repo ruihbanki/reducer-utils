@@ -3,6 +3,9 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 function createStateProxy(state) {
     let cloneState = null;
     const manager = {
@@ -74,9 +77,9 @@ function createProxyObject(object, objectProp, parentManager) {
 function cloneProp(obj, prop) {
     let cloneProp = null;
     if (Array.isArray(obj[prop])) {
-        cloneProp = obj[prop].concat();
+        cloneProp = [...obj[prop]];
     } else {
-        cloneProp = Object.assign({}, obj[prop]);
+        cloneProp = _extends({}, obj[prop]);
     }
     return cloneProp;
 }

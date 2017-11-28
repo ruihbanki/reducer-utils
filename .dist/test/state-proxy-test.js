@@ -102,8 +102,8 @@ describe('when add an item in an array', function () {
     });
 });
 
-describe('when change a property in a nested object', function () {
-    it('should create a new state to all properties', function () {
+describe('when more than one property in a nested object', function () {
+    it('should create clone only once', function () {
         const stateProxy = (0, _stateProxy2.default)(state);
         stateProxy.user.roleActive.name = 'New name';
         const newState = stateProxy.getNewState();
@@ -166,5 +166,21 @@ describe('when set a proxy in a property', function () {
 
     it('should set the original data and not the proxy', function () {
         (0, _chai.expect)(newState.roleActive).to.equal(state.user.roles[0]);
+    });
+});
+
+describe('when change a property in a nested object', function () {
+    it('should create a new state to all properties', function () {
+        const stateProxy = (0, _stateProxy2.default)(state);
+        const user0 = stateProxy.user.__object;
+        stateProxy.user.roleActive.name = 'New name';
+        const userProxy1 = stateProxy.user;
+        const user1 = userProxy1.__object;
+        stateProxy.user.roles[0].name = 'New name 2';
+        const userProxy2 = stateProxy.user;
+        const user2 = userProxy2.__object;
+        const newState = stateProxy.getNewState();
+        (0, _chai.expect)(user0 !== user1).to.be.true;
+        (0, _chai.expect)(user1 === user2).to.be.true;
     });
 });

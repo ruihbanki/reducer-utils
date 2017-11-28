@@ -3,7 +3,7 @@ function createStateProxy(state) {
     const manager = {
         clone(prop) {
             if (!cloneState) {
-                cloneState = Object.assign({}, state);
+                cloneState = {...state};
             }
             const clone = cloneProp(cloneState, prop);
             cloneState[prop] = clone;
@@ -69,9 +69,9 @@ function createProxyObject(object, objectProp, parentManager) {
 function cloneProp(obj, prop) {
     let cloneProp = null;
     if (Array.isArray(obj[prop])) { 
-        cloneProp = obj[prop].concat();
+        cloneProp = [...obj[prop]];
     } else {
-        cloneProp = Object.assign({}, obj[prop]);
+        cloneProp = {...obj[prop]};
     }
     return cloneProp;
 }

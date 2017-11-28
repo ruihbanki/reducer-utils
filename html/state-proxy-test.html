@@ -64,49 +64,17 @@ const state = {
     },
 };
 
-console.log('\n=> set string');
-var stateProxy = createStateProxy(state);
-stateProxy.user.name = 'Marie';
-var newState = stateProxy.__newState;
-console.log('newState', newState);
-logDifferences(state, newState);
+const stateProxy = createStateProxy(state);
+const user0 = stateProxy.user.__object;
+stateProxy.user.roleActive.name = 'New name';
+const userProxy1 = stateProxy.user;
+const user1 = userProxy1.__object;
+stateProxy.user.roles[0].name = 'New name 2';
+const userProxy2 = stateProxy.user;
+const user2 = userProxy2.__object;
+const newState = stateProxy.getNewState();
 
-console.log('\n=> remove an item in an array by index');
-var stateProxy = createStateProxy(state);
-stateProxy.user.roles.splice(0, 1);
-var newState = stateProxy.__newState;
-console.log('newState', newState);
-logDifferences(state, newState);
-
-console.log('\n=> set in array');
-var stateProxy = createStateProxy(state);
-stateProxy.products[0] = {
-    id: 4,
-    name: 'Other',
-};
-var newState = stateProxy.__newState;
-console.log('newState', newState);
-logDifferences(state, newState);
-
-console.log('\n=> set an proxy transform it in origina data');
-var stateProxy = createStateProxy(state);
-var roleProxy = stateProxy.user.roles[0];
-stateProxy.user.roleActive = roleProxy;
-var newState = stateProxy.__newState;
-console.log('newState', newState);
-logDifferences(state, newState);
-
-console.log('\n=> helpers');
-var stateProxy = createStateProxy(state);
-var object = stateProxy.products[1].__object;
-var isProxy = stateProxy.user.__isProxy;
-var newState = stateProxy.__newState;
-console.log('object', object);
-console.log('isProxy', isProxy);
-console.log('newState', newState);
-logDifferences(state, newState);
-
-
+console.log(user1 === user2);
 
 // TODO
 // support to all array methods https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/entries
