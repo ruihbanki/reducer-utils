@@ -83,13 +83,14 @@ function cloneProp(obj, prop) {
 
 function returnGet(obj, name, manager) {
     const value = obj[name];
+
     switch (name) {
         case '__object':
             return obj;
         case '__isProxy':
             return true;
-        case '__newState':
-            return manager.getCloneState();
+        case 'getNewState':
+            return manager.getCloneState;
         default:
         // continue
     }

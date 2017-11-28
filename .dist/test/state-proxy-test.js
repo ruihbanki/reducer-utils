@@ -63,7 +63,7 @@ beforeEach(function () {
 describe('when no one modification was made', function () {
     it('should not create a new state', function () {
         const stateProxy = (0, _stateProxy2.default)(state);
-        const newState = stateProxy.__newState;
+        const newState = stateProxy.getNewState();
         (0, _chai.expect)(newState).to.equal(state);
     });
 });
@@ -73,7 +73,7 @@ describe('when some modification was made', function () {
     beforeEach(function () {
         const stateProxy = (0, _stateProxy2.default)(state);
         stateProxy.user.name = 'George';
-        newState = stateProxy.__newState;
+        newState = stateProxy.getNewState();
     });
 
     it('should create a new state', function () {
@@ -97,7 +97,7 @@ describe('when add an item in an array', function () {
             id: 4,
             name: 'Other'
         });
-        const newState = stateProxy.__newState;
+        const newState = stateProxy.getNewState();
         (0, _chai.expect)(newState.products.length).to.equal(4);
     });
 });
@@ -106,7 +106,7 @@ describe('when change a property in a nested object', function () {
     it('should create a new state to all properties', function () {
         const stateProxy = (0, _stateProxy2.default)(state);
         stateProxy.user.roleActive.name = 'New name';
-        const newState = stateProxy.__newState;
+        const newState = stateProxy.getNewState();
         (0, _chai.expect)(newState).to.not.equal(state);
         (0, _chai.expect)(newState.user).to.not.equal(state.user);
         (0, _chai.expect)(newState.user.roleActive).to.not.equal(state.user.roleActive);
@@ -118,7 +118,7 @@ describe('when change item in an array', function () {
     beforeEach(function () {
         const stateProxy = (0, _stateProxy2.default)(state);
         stateProxy.products[0].name = 'Microsoft';
-        newState = stateProxy.__newState;
+        newState = stateProxy.getNewState();
     });
 
     it('should change the state', function () {
@@ -139,7 +139,7 @@ describe('when remove item in an array', function () {
     beforeEach(function () {
         const stateProxy = (0, _stateProxy2.default)(state);
         stateProxy.products.splice(1, 1);
-        newState = stateProxy.__newState;
+        newState = stateProxy.getNewState();
     });
 
     it('should change the state', function () {
@@ -161,7 +161,7 @@ describe('when set a proxy in a property', function () {
         const stateProxy = (0, _stateProxy2.default)(state);
         const roleProxy = stateProxy.user.roles[0];
         stateProxy.roleActive = roleProxy;
-        newState = stateProxy.__newState;
+        newState = stateProxy.getNewState();
     });
 
     it('should set the original data and not the proxy', function () {
