@@ -7,100 +7,107 @@ Object.defineProperty(exports, "__esModule", {
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 function createStateProxy(state) {
-    let cloneState = null;
+    let _clone = null;
     const manager = {
         clone: function clone(prop) {
-            if (!cloneState) {
-                cloneState = Object.assign({}, state);
+            if (!_clone) {
+                _clone = _extends({}, state);
             }
-            const clone = cloneProp(cloneState, prop);
-            cloneState[prop] = clone;
-            return clone;
+            const clonedProp = cloneProp(_clone, prop);
+            _clone[prop] = clonedProp;
+            return clonedProp;
         },
         getCloneState: function getCloneState() {
             return cloneState || state;
         }
     };
     const handler = {
-        get: function get(target, name) {
-            const obj = cloneState || target;
-            return returnGet(obj, name, manager);
+        get: function get(obj, prop) {
+            if (prop === 'getNewState') {
+                return function () {
+                    return _clone || state;
+                };
+            }
+            const target = _clone || obj;
+            return returnGet(target, prop, manager);
         },
         set: function set(obj, prop, value) {
-            if (!cloneState) {
-                cloneState = Object.assign({}, state);
+            if (!_clone) {
+                _clone = _extends({}, state);
             }
             if (value.__isProxy) {
                 value = value.__object;
             }
-            cloneState[prop] = value;
+            _clone[prop] = value;
             return true;
         }
     };
-    return new Proxy(state, handler);
+    const proxy = new Proxy(state, handler);
+    return proxy;
 }
 
-function createProxyObject(object, objectProp, parentManager) {
-    let cloneState = null;
+function createProxyObject(obj, objProp, parentManager) {
+    console.log('createProxyObject', objProp);
+    let _clone2 = null;
     const manager = {
         clone: function clone(prop) {
-            if (!cloneState) {
-                cloneState = parentManager.clone(objectProp);
+            if (!_clone2) {
+                _clone2 = parentManager.clone(objProp);
             }
-            const clone = cloneProp(cloneState, prop);
-            cloneState[prop] = clone;
-            return clone;
-        },
-        getCloneState: function getCloneState() {
-            return parentManagergetCloneState();
+            const clonedProp = cloneProp(_clone2, prop);
+            _clone2[prop] = clonedProp;
+            return clonedProp;
         }
     };
     const handler = {
-        get: function get(target, name) {
-            const obj = cloneState || target;
-            return returnGet(obj, name, manager);
+        get: function get(obj, prop) {
+            const target = _clone2 || obj;
+            return returnGet(target, prop, manager);
         },
         set: function set(obj, prop, value) {
-            if (!cloneState) {
-                cloneState = parentManager.clone(objectProp);
+            if (!_clone2) {
+                _clone2 = parentManager.clone(objProp);
             }
             if (value.__isProxy) {
                 value = value.__object;
             }
-            cloneState[prop] = value;
+            _clone2[prop] = value;
             return true;
         }
     };
-    return new Proxy(object, handler);
+    const proxy = new Proxy(obj, handler);
+    return proxy;
 };
 
 function cloneProp(obj, prop) {
-    let cloneProp = null;
-    if (Array.isArray(obj[prop])) {
-        cloneProp = [...obj[prop]];
+    const value = obj[prop];
+    if (Array.isArray(value)) {
+        return [...value];
     } else {
-        cloneProp = _extends({}, obj[prop]);
+        return _extends({}, value);
     }
-    return cloneProp;
 }
 
-function returnGet(obj, name, manager) {
-    const value = obj[name];
-
-    switch (name) {
-        case '__object':
-            return obj;
-        case '__isProxy':
-            return true;
-        case 'getNewState':
-            return manager.getCloneState;
-        default:
-        // continue
+function returnGet(obj, prop, manager) {
+    console.log('returnGet', prop);
+    if (prop === '__isProxy') {
+        return true;
+    } else if (prop === '__object') {
+        return obj;
     }
-    if (value instanceof Function) {
+
+    const value = obj[prop];
+    if (!value) {
+        return value;
+    } else if (value instanceof Function) {
         return value;
     } else if (value instanceof Object) {
-        return createProxyObject(value, name, manager);
+        console.log('============', value.__isProxy);
+        if (value.__isProxy) {
+            return value;
+        } else {
+            return createProxyObject(value, prop, manager);
+        }
     } else {
         return value;
     }
