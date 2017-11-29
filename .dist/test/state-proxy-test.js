@@ -174,7 +174,7 @@ describe('when change a property in a nested object', function () {
         const stateProxy = (0, _stateProxy2.default)(state);
         const user0 = stateProxy.user.__object;
         stateProxy.user.roleActive.name = 'New name';
-        // stateProxy.user.roleActive.description = 'New description';
+        stateProxy.user.roleActive.description = 'New description';
         const user1 = stateProxy.user.__object;
         stateProxy.user.roles[0].name = 'New name 2';
         const user2 = stateProxy.user.__object;
