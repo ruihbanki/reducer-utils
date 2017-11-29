@@ -1,5 +1,6 @@
 function createStateProxy(state) {
     let clone = null;
+    let proxiesMap = {};
     const manager = {
         clone(prop) {
             if (!clone) {
@@ -21,7 +22,7 @@ function createStateProxy(state) {
                 }
             }
             const target = clone || obj;
-            return returnGet(target, prop, manager);            
+            return returnGet(target, prop, manager, proxiesMap);            
         },
         set: function(obj, prop, value) {
             if (!clone) {
@@ -39,8 +40,8 @@ function createStateProxy(state) {
 }
 
 function createProxyObject(obj, objProp, parentManager) {
-    console.log('createProxyObject', objProp)
     let clone = null;
+    let proxiesMap = {};
     const manager = {
         clone(prop) {
             if (!clone) {
@@ -54,7 +55,7 @@ function createProxyObject(obj, objProp, parentManager) {
     const handler = {
         get: function(obj, prop) {
             const target = clone || obj;
-            return returnGet(target, prop, manager);
+            return returnGet(target, prop, manager, proxiesMap);
         },
         set: function(obj, prop, value) {
             if (!clone) {
@@ -80,7 +81,7 @@ function cloneProp(obj, prop) {
     }
 }
 
-function returnGet(obj, prop, manager) {
+function returnGet(obj, prop, manager, proxiesMap) {
     console.log('returnGet', prop);
     if (prop === '__isProxy') {
         return true;
@@ -89,17 +90,17 @@ function returnGet(obj, prop, manager) {
     }
 
     const value = obj[prop];
+    let proxy = proxiesMap[prop];
     if (!value) {
         return value;
     } else  if (value instanceof Function) {
         return value;
     } else if (value instanceof Object) {
-        console.log('============', value.__isProxy);
-        if (value.__isProxy) {
-            return value;
-        } else {
-            return createProxyObject(value, prop, manager);
+        if (!proxy) {
+            proxy = createProxyObject(value, prop, manager);
+            proxiesMap[prop] = proxy;
         }
+        return proxy;
     } else {
         return value;
     }

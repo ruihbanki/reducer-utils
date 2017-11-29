@@ -175,11 +175,11 @@ describe('when set a proxy in a property', function() {
 });
 
 describe('when change a property in a nested object', function() {
-    it.only('should create a new state to all properties', function() {
+    it('should create a new state to all properties', function() {
         const stateProxy = createStateProxy(state);
         const user0 = stateProxy.user.__object;
         stateProxy.user.roleActive.name = 'New name';
-        // stateProxy.user.roleActive.description = 'New description';
+        stateProxy.user.roleActive.description = 'New description';
         const user1 = stateProxy.user.__object;
         stateProxy.user.roles[0].name = 'New name 2';
         const user2 = stateProxy.user.__object;

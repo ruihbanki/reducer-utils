@@ -8,6 +8,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 function createStateProxy(state) {
     let _clone = null;
+    let proxiesMap = {};
     const manager = {
         clone: function clone(prop) {
             if (!_clone) {
@@ -29,7 +30,7 @@ function createStateProxy(state) {
                 };
             }
             const target = _clone || obj;
-            return returnGet(target, prop, manager);
+            return returnGet(target, prop, manager, proxiesMap);
         },
         set: function set(obj, prop, value) {
             if (!_clone) {
@@ -49,6 +50,7 @@ function createStateProxy(state) {
 function createProxyObject(obj, objProp, parentManager) {
     console.log('createProxyObject', objProp);
     let _clone2 = null;
+    let proxiesMap = {};
     const manager = {
         clone: function clone(prop) {
             if (!_clone2) {
@@ -62,7 +64,7 @@ function createProxyObject(obj, objProp, parentManager) {
     const handler = {
         get: function get(obj, prop) {
             const target = _clone2 || obj;
-            return returnGet(target, prop, manager);
+            return returnGet(target, prop, manager, proxiesMap);
         },
         set: function set(obj, prop, value) {
             if (!_clone2) {
@@ -88,7 +90,7 @@ function cloneProp(obj, prop) {
     }
 }
 
-function returnGet(obj, prop, manager) {
+function returnGet(obj, prop, manager, proxiesMap) {
     console.log('returnGet', prop);
     if (prop === '__isProxy') {
         return true;
@@ -97,17 +99,18 @@ function returnGet(obj, prop, manager) {
     }
 
     const value = obj[prop];
+    let proxy = proxiesMap[prop];
     if (!value) {
         return value;
     } else if (value instanceof Function) {
         return value;
     } else if (value instanceof Object) {
         console.log('============', value.__isProxy);
-        if (value.__isProxy) {
-            return value;
-        } else {
-            return createProxyObject(value, prop, manager);
+        if (!proxy) {
+            proxy = createProxyObject(value, prop, manager);
+            proxiesMap[prop] = proxy;
         }
+        return proxy;
     } else {
         return value;
     }
