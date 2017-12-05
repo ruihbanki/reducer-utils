@@ -95,18 +95,6 @@ describe('when some modification was made', function() {
     });
 });
 
-describe('when add an item in an array', function() {
-    it('should increase the length of array', function() {
-        const stateProxy = createStateProxy(state);
-        stateProxy.products.push({
-            id: 4,
-            name: 'Other',
-        });
-        const newState = stateProxy.getNewState();
-        expect(newState.products.length).to.equal(4);
-    });
-});    
-
 describe('when more than one property in a nested object', function() {
     it('should create clone only once', function() {
         const stateProxy = createStateProxy(state);
@@ -115,48 +103,6 @@ describe('when more than one property in a nested object', function() {
         expect(newState).to.not.equal(state);
         expect(newState.user).to.not.equal(state.user);
         expect(newState.user.roleActive).to.not.equal(state.user.roleActive);
-    });
-});
-
-describe('when change item in an array', function() {
-    let newState = null;
-    beforeEach(function() {
-        const stateProxy = createStateProxy(state);
-        stateProxy.products[0].name = 'Microsoft';
-        newState = stateProxy.getNewState();
-    });
-
-    it('should change the state', function() {        
-        expect(newState).to.not.equal(state);
-    });
-
-    it('should change the array', function() {        
-        expect(newState.products).to.not.equal(state.products);
-    });
-
-    it('should change the array item', function() {        
-        expect(newState.products[0]).to.not.equal(state.products[0]);
-    });
-});
-
-describe('when remove item in an array', function() {
-    let newState = null;
-    beforeEach(function() {
-        const stateProxy = createStateProxy(state);
-        stateProxy.products.splice(1, 1);
-        newState = stateProxy.getNewState();
-    });
-
-    it('should change the state', function() {        
-        expect(newState).to.not.equal(state);
-    });
-
-    it('should change the array', function() {        
-        expect(newState.products).to.not.equal(state.products);
-    });
-
-    it('should change the length of the array', function() {        
-        expect(newState.products.length).to.equal(2);
     });
 });
 

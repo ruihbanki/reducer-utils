@@ -33,8 +33,7 @@ function createStateProxy(state) {
         }
     };
 
-    const proxy = new Proxy(state, handler);
-    return proxy;
+    return new Proxy(state, handler);
 }
 
 function returnCloneProp(state, clone, prop) {
@@ -81,8 +80,7 @@ function createProxyObject(obj, objProp, parentManager) {
         }
     };
 
-    const proxy = new Proxy(obj, handler); 
-    return proxy; 
+    return new Proxy(obj, handler); 
 };
 
 function returnGet(obj, prop, manager, proxiesMap) {
