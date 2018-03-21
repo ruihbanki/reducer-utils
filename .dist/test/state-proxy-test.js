@@ -90,18 +90,6 @@ describe('when some modification was made', function () {
     });
 });
 
-describe('when add an item in an array', function () {
-    it('should increase the length of array', function () {
-        const stateProxy = (0, _stateProxy2.default)(state);
-        stateProxy.products.push({
-            id: 4,
-            name: 'Other'
-        });
-        const newState = stateProxy.getNewState();
-        (0, _chai.expect)(newState.products.length).to.equal(4);
-    });
-});
-
 describe('when more than one property in a nested object', function () {
     it('should create clone only once', function () {
         const stateProxy = (0, _stateProxy2.default)(state);
@@ -110,48 +98,6 @@ describe('when more than one property in a nested object', function () {
         (0, _chai.expect)(newState).to.not.equal(state);
         (0, _chai.expect)(newState.user).to.not.equal(state.user);
         (0, _chai.expect)(newState.user.roleActive).to.not.equal(state.user.roleActive);
-    });
-});
-
-describe('when change item in an array', function () {
-    let newState = null;
-    beforeEach(function () {
-        const stateProxy = (0, _stateProxy2.default)(state);
-        stateProxy.products[0].name = 'Microsoft';
-        newState = stateProxy.getNewState();
-    });
-
-    it('should change the state', function () {
-        (0, _chai.expect)(newState).to.not.equal(state);
-    });
-
-    it('should change the array', function () {
-        (0, _chai.expect)(newState.products).to.not.equal(state.products);
-    });
-
-    it('should change the array item', function () {
-        (0, _chai.expect)(newState.products[0]).to.not.equal(state.products[0]);
-    });
-});
-
-describe('when remove item in an array', function () {
-    let newState = null;
-    beforeEach(function () {
-        const stateProxy = (0, _stateProxy2.default)(state);
-        stateProxy.products.splice(1, 1);
-        newState = stateProxy.getNewState();
-    });
-
-    it('should change the state', function () {
-        (0, _chai.expect)(newState).to.not.equal(state);
-    });
-
-    it('should change the array', function () {
-        (0, _chai.expect)(newState.products).to.not.equal(state.products);
-    });
-
-    it('should change the length of the array', function () {
-        (0, _chai.expect)(newState.products.length).to.equal(2);
     });
 });
 
@@ -180,5 +126,21 @@ describe('when change a property in a nested object', function () {
         const user2 = stateProxy.user.__object;
         (0, _chai.expect)(user0 !== user1).to.be.true;
         (0, _chai.expect)(user1 === user2).to.be.true;
+    });
+});
+
+describe('when delete a property', function () {
+    it('should create a new state', function () {
+        const stateProxy = (0, _stateProxy2.default)(state);
+        delete stateProxy.user.roleActive;
+        const newState = stateProxy.getNewState();
+        (0, _chai.expect)(newState !== state).to.be.true;
+        (0, _chai.expect)(newState.user !== state.user).to.be.true;
+    });
+    it('should remove the prop', function () {
+        const stateProxy = (0, _stateProxy2.default)(state);
+        delete stateProxy.user.roleActive;
+        const newState = stateProxy.getNewState();
+        (0, _chai.expect)(newState.user.roleActive === undefined).to.be.true;
     });
 });

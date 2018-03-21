@@ -201,12 +201,35 @@ describe('when used the filter', function () {
         result = stateProxy.products.filter(item => {
             return item.id < 2;
         });
-        console.log(result);
         newState = stateProxy.getNewState();
     });
 
     it('should work properly', function () {
         (0, _chai.expect)(result.length).to.equal(1);
+    });
+
+    it('should remain the state', function () {
+        (0, _chai.expect)(newState).to.equal(state);
+    });
+
+    it('should not change the array', function () {
+        (0, _chai.expect)(state.products).to.equal(newState.products);
+    });
+});
+
+describe('when used the find', function () {
+    let newState = null;
+    let result = null;
+    beforeEach(function () {
+        const stateProxy = (0, _stateProxy2.default)(state);
+        result = stateProxy.products.find(item => {
+            return item.id === 3;
+        });
+        newState = stateProxy.getNewState();
+    });
+
+    it('should work properly', function () {
+        (0, _chai.expect)(result.name).to.equal('Galaxy');
     });
 
     it('should remain the state', function () {

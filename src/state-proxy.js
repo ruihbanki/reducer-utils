@@ -30,7 +30,16 @@ function createStateProxy(state) {
             }
             clone[prop] = value; 
             return true;       
-        }
+        },
+        deleteProperty(target, prop) {
+            if (prop in target) {
+                if (!clone) {
+                    clone = {...state};
+                }
+                delete clone[prop];
+                return true;
+            }
+        },
     };
 
     return new Proxy(state, handler);
@@ -77,7 +86,16 @@ function createProxyObject(obj, objProp, parentManager) {
             }
             clone[prop] = value;  
             return true;          
-        }
+        },
+        deleteProperty(target, prop) {
+            if (prop in target) {
+                if (!clone) {
+                    clone = parentManager.createCloneProp(objProp);
+                }
+                delete clone[prop];
+                return true;
+            }
+        },
     };
 
     return new Proxy(obj, handler); 

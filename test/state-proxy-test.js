@@ -133,3 +133,19 @@ describe('when change a property in a nested object', function() {
         expect(user1 === user2).to.be.true;
     });
 });
+
+describe('when delete a property', function() {
+    it('should create a new state', function() {
+        const stateProxy = createStateProxy(state);
+        delete stateProxy.user.roleActive;
+        const newState = stateProxy.getNewState();
+        expect(newState !== state).to.be.true;
+        expect(newState.user !== state.user).to.be.true;
+    });
+    it('should remove the prop', function() {
+        const stateProxy = createStateProxy(state);
+        delete stateProxy.user.roleActive;
+        const newState = stateProxy.getNewState();
+        expect(newState.user.roleActive === undefined).to.be.true;
+    });
+});

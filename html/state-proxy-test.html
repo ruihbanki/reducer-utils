@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
-<script src="../.dist/src/state-proxy.js"></script>
-<script src="../.dist/src/utils.js"></script>
+<script src="../src/state-proxy.js"></script>
+<script src="../src/utils.js"></script>
 <script>
 
 const state = {
@@ -65,16 +65,10 @@ const state = {
 };
 
 const stateProxy = createStateProxy(state);
-const user0 = stateProxy.user.__object;
-stateProxy.user.roleActive.name = 'New name';
-const userProxy1 = stateProxy.user;
-const user1 = userProxy1.__object;
-stateProxy.user.roles[0].name = 'New name 2';
-const userProxy2 = stateProxy.user;
-const user2 = userProxy2.__object;
+delete stateProxy.products[0].id;
 const newState = stateProxy.getNewState();
 
-console.log(user1 === user2);
+console.log(newState);
 
 // TODO
 // support to all array methods https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/entries
