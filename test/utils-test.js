@@ -41,6 +41,7 @@ beforeEach(function() {
     ];
 });
 
+
 describe('#utils.findByProperty', function() {
     it('should find item by property', function() {
         const itemFound = utils.findByProperty(this.items, 'name', 'Item 3');
