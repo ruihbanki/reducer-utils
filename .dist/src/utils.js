@@ -135,7 +135,7 @@ function logDifferences(state, newState) {
     if (level === 1) {
         console.log('STATE DIFFERENCE');
     }
-    for (key in newState) {
+    for (let key in newState) {
         const newStateValue = newState[key];
         if (newStateValue instanceof Object) {
             const stateValue = state[key];
