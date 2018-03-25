@@ -31,7 +31,7 @@
     "babel-core": "*",
     "babel-preset-es2015-node5": "*",
     "babel-preset-stage-3": "*",
-    "babel-register": "*",    
+    "babel-register": "*",
     "chai": "^4.0.2",
     "mocha": "^3.4.2"
   }

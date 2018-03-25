@@ -1,11 +1,14 @@
 import createStateProxy from './state-proxy';
 
-export const reducerStateProxy = (state, action) => {
-    return reducer => {
+const reducerStateProxy = (reducer) => {
+    return (state, action) => {
+        if (action.type.substr(0, 2) === '@@') {
+            return reducer(state, action);
+        } 
         const stateProxy = createStateProxy(state);
-        const stateResult = reducer(stateProxy, reducer);
-        return stateResult.getNewState();
-    };
+        reducer(stateProxy, action);
+        return stateProxy.getNewState();
+    }
 };
 
 export default reducerStateProxy;

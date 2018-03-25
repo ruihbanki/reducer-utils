@@ -1,9 +1,9 @@
-import createProxyState from './src/createProxyState';
-import utils from './src/utils';
+import createStateProxy from './state-proxy';
+import utils from './utils';
 import reducerStateProxy from './reducer-state-proxy';
 
-exports.default = {
-    createProxyState,
+export default {
+    createStateProxy,
     utils,
     reducerStateProxy,
 };

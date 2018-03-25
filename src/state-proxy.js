@@ -25,7 +25,7 @@ function createStateProxy(state) {
             if (!clone) {
                 clone = {...state};
             }       
-            if (value.__isProxy) {
+            if (value != null && value.__isProxy) {
                 value = value.__object;
             }
             clone[prop] = value; 
@@ -81,7 +81,7 @@ function createProxyObject(obj, objProp, parentManager) {
             if (!clone) {
                 clone = parentManager.createCloneProp(objProp);
             }            
-            if (value.__isProxy) {
+            if (value != null && value.__isProxy) {
                 value = value.__object;
             }
             clone[prop] = value;  
