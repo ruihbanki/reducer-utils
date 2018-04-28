@@ -1,6 +1,5 @@
 import { expect } from 'chai';
 import createStateProxy from '../src/state-proxy';
-import utils from '../src/utils'; 
 
 let state = null;
 beforeEach(function() {
