@@ -133,6 +133,23 @@ describe('when change a property in a nested object', function() {
     });
 });
 
-function deepCopy(object) {
-    return JSON.parse(JSON.stringify(object));
-}
+describe('when delete a property', function() {
+    let newState = null;
+    beforeEach(function() {
+        const stateProxy = createStateProxy(state);
+        delete stateProxy.user.roleActive;
+        newState = stateProxy.getNewState();
+    });
+
+    it('should delete it', function() {
+        expect(newState.user.roleActive).to.be.undefined;
+    });
+
+    it('should not change the original state', function() {
+        expect(state.user.roleActive).not.to.be.undefined;
+    });
+
+    it('should create a new state to its parents', function() {
+        expect(state.user !== newState.user);
+    });
+});
